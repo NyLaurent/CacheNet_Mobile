@@ -2,8 +2,8 @@
   "expo": {
     
       "newArchEnabled": true,
-    "name": "my-expo-app",
-    "slug": "my-expo-app",
+    "name": "cachenet",
+    "slug": "cachenet",
     "version": "1.0.0",
 
     "web": {
