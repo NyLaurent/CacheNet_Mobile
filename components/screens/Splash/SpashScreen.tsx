@@ -2,31 +2,20 @@ import { useEffect } from "react";
 import { View, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from '../../../navigation/types'; // Import the type
 
+// Define the type for your navigation prop
+type SplashScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Splash'>;
 
-
-type RootStackParamList = {
-  Splash: undefined;
-  Onboarding: undefined;
-  SignUp: undefined;
-  SignIn: undefined;
-  ProfileCompletion: undefined;
-  AuthSuccess: undefined;
-  Home: undefined;
-};
-type SplashScreenNavigationProp = StackNavigationProp<RootStackParamList, "Splash">
 const SplashScreen = () => {
-
-
-  
   const navigation = useNavigation<SplashScreenNavigationProp>();
 
   useEffect(() => {
     // Simulate loading process
     setTimeout(() => {
-      navigation.replace("Onboarding"); // Use navigation.replace instead of router.replace
+      navigation.replace("Onboarding");
     }, 2000);
-  }, []); // Remove navigation from dependencies
+  }, []);
 
   return (
     <View style={styles.container}>

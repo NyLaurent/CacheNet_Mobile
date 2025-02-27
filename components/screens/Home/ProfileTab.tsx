@@ -1,16 +1,19 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import { useNavigation } from "@react-navigation/native"
-import { useRouter } from "expo-router"
+import { StackNavigationProp } from '@react-navigation/stack'
+import { RootStackParamList } from '../../../navigation/types'
+
+// Define the type for your navigation prop
+type ProfileTabNavigationProp = StackNavigationProp<RootStackParamList, 'ProfileTab'>;
 
 const ProfileTab = () => {
-  const navigation = useNavigation();
-  const router = useRouter();
+  const navigation = useNavigation<ProfileTabNavigationProp>();
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
       <Text style={styles.subtitle}>Your profile information goes here.</Text>
-      <TouchableOpacity style={styles.button} onPress={() => router.navigate("Settings")}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Settings")}>
         <Text style={styles.buttonText}>Go to Settings</Text>
       </TouchableOpacity>
     </View>

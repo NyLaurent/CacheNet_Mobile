@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from '../../../navigation/types'; // Import the type
+
+// Define the type for your navigation prop
+type OnboardingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Onboarding'>;
 
 const onboardingData = [
   {
@@ -22,7 +27,7 @@ const onboardingData = [
 
 const OnboardingScreen = () => {
   const [currentPage, setCurrentPage] = useState(0);
-  const navigation = useNavigation();
+  const navigation = useNavigation<OnboardingScreenNavigationProp>();
 
   const handleNext = () => {
     if (currentPage < onboardingData.length - 1) {

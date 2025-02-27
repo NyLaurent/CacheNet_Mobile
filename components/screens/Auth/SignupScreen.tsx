@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from '../../../navigation/types'; // Import the type
+
+// Define the type for your navigation prop
+type SignUpScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
 
 const SignUpScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigation = useNavigation();
+  const navigation = useNavigation<SignUpScreenNavigationProp>();
 
   const handleSignUp = () => {
     // Implement sign up logic here

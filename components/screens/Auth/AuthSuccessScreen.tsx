@@ -1,14 +1,19 @@
 import { useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from '../../../navigation/types'; // Import the type
+
+// Define the type for your navigation prop
+type AuthSuccessScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AuthSuccess'>;
 
 const AuthSuccessScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<AuthSuccessScreenNavigationProp>();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.navigate("Home"); // Use navigation.navigate
-    }, 3000); // Redirect to Home after 3 seconds
+      navigation.navigate("Home");
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [navigation]);

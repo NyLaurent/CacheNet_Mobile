@@ -1,16 +1,19 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import { useNavigation } from "@react-navigation/native"
-import { useRouter } from "expo-router"
+import { StackNavigationProp } from '@react-navigation/stack'
+import { RootStackParamList } from '../../../navigation/types'
+
+// Define the type for your navigation prop
+type HomeTabNavigationProp = StackNavigationProp<RootStackParamList, 'HomeTab'>
 
 const HomeTab = () => {
-  const navigation = useNavigation()
-  const router = useRouter()
+  const navigation = useNavigation<HomeTabNavigationProp>()
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to the Home Screen</Text>
       <Text style={styles.subtitle}>You've successfully signed in!</Text>
-      <TouchableOpacity style={styles.button} onPress={() => router.navigate("Search")}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Search")}>
         <Text style={styles.buttonText}>Go to Search</Text>
       </TouchableOpacity>
     </View>

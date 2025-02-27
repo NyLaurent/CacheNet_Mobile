@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from '../../../navigation/types'; // Import the type
+
+// Define the type for your navigation prop
+type ProfileCompletionNavigationProp = StackNavigationProp<RootStackParamList, 'ProfileCompletion'>;
 
 const ProfileCompletionScreen = () => {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
-  const navigation = useNavigation();
+  const navigation = useNavigation<ProfileCompletionNavigationProp>();
 
   const handleComplete = () => {
     // Implement profile completion logic here
