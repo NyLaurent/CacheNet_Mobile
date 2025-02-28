@@ -44,7 +44,7 @@ const OnboardingScreen = () => {
     if (currentPage < onboardingData.length - 1) {
       flatListRef.current?.scrollToIndex({ index: currentPage + 1, animated: true });
     } else {
-      navigation.navigate("SignUp");
+      navigation.navigate("SignUpOptions");
     }
   };
 
