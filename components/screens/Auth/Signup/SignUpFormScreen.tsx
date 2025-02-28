@@ -1,186 +1,254 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from '../../../../navigation/types';
-import { ArrowLeft, Eye, EyeOff, Mail, Lock, Github, Facebook } from "lucide-react-native";
-import { FaArrowLeft } from "react-icons/fa";
+"use client"
 
+import { useState } from "react"
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { useNavigation } from "@react-navigation/native"
+import type { StackNavigationProp } from "@react-navigation/stack"
+import type { RootStackParamList } from "../../../../navigation/types"
+import Icon from "react-native-vector-icons/FontAwesome"
 
-type SignUpFormScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignUpForm'>;
+type SignUpFormScreenNavigationProp = StackNavigationProp<RootStackParamList, "SignUpForm">
 
 const SignUpFormScreen = () => {
-  const navigation = useNavigation<SignUpFormScreenNavigationProp>();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const navigation = useNavigation<SignUpFormScreenNavigationProp>()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleSignUp = () => {
-    // Implement sign up logic here
-    console.log("Sign up with:", email, password);
-    // After successful sign up, navigate to SignIn
-    navigation.navigate("SignIn");
-  };
+    if (!email || !password) {
+      // Handle validation
+      return
+    }
+
+    setLoading(true)
+    // Simulate a network request
+    setTimeout(() => {
+      setLoading(false)
+      // Navigate to the next screen or home screen
+      // navigation.navigate("Home");
+    }, 1000)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        style={styles.backButton} 
-        onPress={() => navigation.goBack()}
-      >
-        <FaArrowLeft color="#000000" size={24} />
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('SignUpOptions')}>
+        <Icon name="arrow-left" size={24} color="#9B59B6" />
       </TouchableOpacity>
 
-      <View style={styles.content}>
-        <Image
-          source={require("../../../../assets/images/logo.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <View style={styles.content}>
+            <Image source={require("../../../../assets/images/logo.png")} style={styles.logo} resizeMode="contain" />
 
-        <Text style={styles.title}>Create Your Account</Text>
+            <Text style={styles.title}>Create Your Account</Text>
 
-        <View style={styles.form}>
-          <View style={styles.inputContainer}>
-            <Mail size={20} color="#666666" />
-            <TextInput
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              style={styles.textInput}
-            />
+            <View style={styles.formContainer}>
+              <View style={styles.inputContainer}>
+                <Icon name="envelope-o" size={20} color="#666666" style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Icon name="lock" size={20} color="#666666" style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Password"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword}
+                  autoCapitalize="none"
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+                  <Icon name={showPassword ? "eye" : "eye-slash"} size={20} color="#666666" />
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity style={styles.checkboxContainer} onPress={() => setRememberMe(!rememberMe)}>
+                <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                  {rememberMe && <Icon name="check" size={14} color="white" />}
+                </View>
+                <Text style={styles.checkboxLabel}>Remember me</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp} disabled={loading}>
+                <Text style={styles.signUpButtonText}>{loading ? "Signing up..." : "Sign up"}</Text>
+              </TouchableOpacity>
+
+              <View style={styles.divider}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerText}>or continue with</Text>
+                <View style={styles.dividerLine} />
+              </View>
+
+              <View style={styles.socialIconsContainer}>
+                <TouchableOpacity style={styles.socialIconButton}>
+                  <Icon name="github" size={24} color="#000000" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.socialIconButton}>
+                  <Icon name="facebook" size={24} color="#1877F2" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.socialIconButton}>
+                  <Icon name="google" size={24} color="#DB4437" />
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.footer}>
+                <Text style={styles.footerText}>Already have an account? </Text>
+                <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
+                  <Text style={styles.footerLink}>Sign in</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
-
-          <View style={styles.inputContainer}>
-            <Lock size={20} color="#666666" />
-            <TextInput
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={!showPassword}
-              style={styles.textInput}
-            />
-            <TouchableOpacity
-              onPress={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <EyeOff size={20} color="#666666" /> : <Eye size={20} color="#666666" />}
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.checkboxContainer}>
-            <TouchableOpacity
-              onPress={() => setRememberMe(!rememberMe)}
-            >
-              <Text style={styles.checkboxLabel}>{rememberMe ? "☑" : "☐"}</Text>
-            </TouchableOpacity>
-            <Text style={styles.checkboxLabel}>Remember me</Text>
-          </View>
-        </View>
-
-        <TouchableOpacity
-          style={styles.signUpButton}
-          onPress={handleSignUp}
-        >
-          <Text style={{ color: "#FFFFFF" }}>Sign up</Text>
-        </TouchableOpacity>
-
-        <Text style={styles.orText}>or continue with</Text>
-
-        <View style={styles.socialIcons}>
-          <TouchableOpacity
-            style={styles.socialButton}
-            onPress={() => console.log("GitHub signup")}
-          >
-            <Github size={24} />
-          </TouchableOpacity>
-                    <TouchableOpacity
-            style={styles.socialButton}
-            onPress={() => console.log("Facebook signup")}
-          >
-            <Facebook size={24} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.socialButton}
-            onPress={() => console.log("Google signup")}
-          >
-            <Image source={require("../../../../assets/images/google.png")} style={styles.socialIcon} />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Already have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
-            <Text style={styles.footerLink}>Sign in</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
+  scrollContent: {
+    flexGrow: 1,
+  },
   backButton: {
-    padding: 16,
+    padding:26
   },
   content: {
     flex: 1,
     alignItems: "center",
     paddingHorizontal: 24,
+    paddingTop: 30,
   },
   logo: {
     width: 80,
     height: 80,
     marginBottom: 24,
-    tintColor: "#873BEA",
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "600",
     marginBottom: 32,
     color: "#000000",
   },
-  form: {
+  formContainer: {
     width: "100%",
-    gap: 16,
-    marginBottom: 24,
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    borderWidth: 1,
+    borderColor: "#E8E8E8",
+    borderRadius: 8,
+    marginBottom: 16,
+    paddingHorizontal: 12,
+    height: 50,
+  },
+  inputIcon: {
+    marginRight: 10,
+  },
+  input: {
+    flex: 1,
+    height: 50,
+    fontSize: 16,
+  },
+  eyeIcon: {
+    padding: 8,
   },
   checkboxContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    marginBottom: 24,
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: "#873BEA",
+    marginRight: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkboxChecked: {
+    backgroundColor: "#873BEA",
   },
   checkboxLabel: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#666666",
   },
-  orText: {
-    fontSize: 16,
-    color: "#666666",
-    marginVertical: 24,
+  signUpButton: {
+    width: "100%",
+    padding: 12,
+    backgroundColor: "#873BEA",
+    alignItems: "center",
+    borderRadius: 8,
+    marginBottom: 24,
   },
-  socialIcons: {
+  signUpButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  divider: {
     flexDirection: "row",
-    gap: 20,
-    marginBottom: 32,
+    alignItems: "center",
+    marginBottom: 24,
+    width: "100%",
   },
-  socialIcon: {
-    width: 24,
-    height: 24,
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#E8E8E8",
+  },
+  dividerText: {
+    marginHorizontal: 16,
+    color: "#666666",
+    fontSize: 14,
+  },
+  socialIconsContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 24,
+  },
+  socialIconButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: "#E8E8E8",
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 10,
   },
   footer: {
     flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 8,
   },
   footerText: {
     color: "#666666",
@@ -191,23 +259,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-  textInput: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 4,
-    padding: 8,
-    flex: 1,
-  },
-  signUpButton: {
-    backgroundColor: "#873BEA",
-    padding: 16,
-    borderRadius: 4,
-    alignItems: "center",
-    width: "100%",
-  },
-  socialButton: {
-    padding: 8,
-  },
-});
+})
 
-export default SignUpFormScreen;
+export default SignUpFormScreen
+

@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SplashScreen from "../components/screens/Splash/SpashScreen"
 import OnboardingScreen from "../components/screens/Onboarding/OnboardingScreen"
 import SignUpOptionsScreen from "../components/screens/Auth/Signup/SignUpOptionsScreen"
-import SignInScreen from "../components/screens/Auth/SignInScreen"
+import SignInScreen from "../components/screens/Auth/Signin/SignInScreen"
 import ProfileCompletionScreen from "../components/screens/Auth/ProfileCompletion"
 import AuthSuccessScreen from "../components/screens/Auth/AuthSuccessScreen"
 import HomeScreen from "../components/screens/Home/index"

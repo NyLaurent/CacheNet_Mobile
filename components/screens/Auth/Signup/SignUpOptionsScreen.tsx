@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from '../../../../navigation/types';
-import { ArrowLeft } from "lucide-react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 type SignUpOptionsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignUpOptions'>;
 
 const SignUpOptionsScreen = () => {
   const navigation = useNavigation<SignUpOptionsScreenNavigationProp>();
+  const [loading, setLoading] = useState(false);
+
+  const handleSignUp = () => {
+    setLoading(true);
+    // Simulate a network request
+    setTimeout(() => {
+      setLoading(false);
+      navigation.navigate("SignUpForm");
+    }, 1000); // Simulate a delay
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -17,7 +26,7 @@ const SignUpOptionsScreen = () => {
         style={styles.backButton} 
         onPress={() => navigation.goBack()}
       >
-        <ArrowLeft color="#000000" size={24} />
+        <Icon name="arrow-left" size={24} color="#000000" />
       </TouchableOpacity>
 
       <View style={styles.content}>
@@ -61,9 +70,12 @@ const SignUpOptionsScreen = () => {
 
         <TouchableOpacity 
           style={styles.signUpButton}
-          onPress={() => navigation.navigate("SignUpForm")}
+          onPress={handleSignUp}
+          disabled={loading}
         >
-          <Text style={{ color: "white" }}>Sign up with password</Text>
+          <Text style={{ color: "white" }}>
+            {loading ? "Signing up..." : "Sign up with password"}
+          </Text>
         </TouchableOpacity>
 
         <View style={styles.footer}>

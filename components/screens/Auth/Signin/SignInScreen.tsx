@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from '../../../navigation/types'; // Import the type
+import { RootStackParamList } from '../../../../navigation/types'; // Import the type
 
 // Define the type for your navigation prop
 type SignInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
