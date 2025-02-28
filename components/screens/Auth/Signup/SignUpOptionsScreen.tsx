@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from '../../../../navigation/types';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -12,12 +13,8 @@ const SignUpOptionsScreen = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = () => {
-    setLoading(true);
-    // Simulate a network request
-    setTimeout(() => {
-      setLoading(false);
-      navigation.navigate("SignUpForm");
-    }, 1000); // Simulate a delay
+    // Remove loading state and delay
+    navigation.navigate("SignUpForm");
   };
 
   return (
@@ -26,7 +23,7 @@ const SignUpOptionsScreen = () => {
         style={styles.backButton} 
         onPress={() => navigation.goBack()}
       >
-        <Icon name="arrow-left" size={24} color="#000000" />
+        <Icon name="arrow-left" size={24} color="#873BEA" />
       </TouchableOpacity>
 
       <View style={styles.content}>
@@ -74,7 +71,7 @@ const SignUpOptionsScreen = () => {
           disabled={loading}
         >
           <Text style={{ color: "white" }}>
-            {loading ? "Signing up..." : "Sign up with password"}
+            Sign up with password
           </Text>
         </TouchableOpacity>
 

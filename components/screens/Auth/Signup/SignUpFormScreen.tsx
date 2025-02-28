@@ -45,7 +45,7 @@ const SignUpFormScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('SignUpOptions')}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Icon name="arrow-left" size={24} color="#9B59B6" />
       </TouchableOpacity>
 
@@ -92,7 +92,7 @@ const SignUpFormScreen = () => {
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp} disabled={loading}>
-                <Text style={styles.signUpButtonText}>{loading ? "Signing up..." : "Sign up"}</Text>
+                <Text style={styles.signUpButtonText}>{loading ? "Signing up..." : "Sign In"}</Text>
               </TouchableOpacity>
 
               <View style={styles.divider}>
