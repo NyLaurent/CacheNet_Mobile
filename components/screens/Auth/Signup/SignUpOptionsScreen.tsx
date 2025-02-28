@@ -13,8 +13,14 @@ const SignUpOptionsScreen = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = () => {
-    // Remove loading state and delay
     navigation.navigate("SignUpForm");
+  };
+
+  const handleSocialSignUp = (provider: string) => {
+    // Handle social sign up logic here
+    console.log(`${provider} login`);
+    // After successful social sign up, navigate to profile completion
+    navigation.navigate("ProfileSetup");
   };
 
   return (
@@ -38,47 +44,40 @@ const SignUpOptionsScreen = () => {
         <View style={styles.socialButtons}>
           <TouchableOpacity
             style={styles.socialButton}
-            onPress={() => console.log("Google login")}
-          >
+            onPress={() => handleSocialSignUp('Google')}>
             <Image source={require("../../../../assets/images/google.png")} style={styles.socialIcon} />
             <Text>Continue with Google</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.socialButton}
-            onPress={() => console.log("Slack login")}
-          >
+            onPress={() => handleSocialSignUp('Slack')}>
             <Image source={require("../../../../assets/images/slack.png")} style={styles.socialIcon} />
             <Text>Continue with Slack</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.socialButton}
-            onPress={() => console.log("GitHub login")}
-          >
+            onPress={() => handleSocialSignUp('GitHub')}>
             <Image source={require("../../../../assets/images/github.png")} style={styles.socialIcon} />
             <Text>Continue with GitHub</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.divider}>
-          <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>or</Text>
-          <View style={styles.dividerLine} />
+          <View style={styles.line} />
+          <Text style={styles.orText}>or</Text>
+          <View style={styles.line} />
         </View>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.signUpButton}
-          onPress={handleSignUp}
-          disabled={loading}
-        >
-          <Text style={{ color: "white" }}>
-            Sign up with password
-          </Text>
+          onPress={handleSignUp}>
+          <Text style={styles.signUpButtonText}>Sign up with email</Text>
         </TouchableOpacity>
 
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Already have an account? </Text>
+        <View style={styles.loginPrompt}>
+          <Text style={styles.promptText}>Already have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
-            <Text style={styles.footerLink}>Sign in</Text>
+            <Text style={styles.loginLink}>Login</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -114,11 +113,21 @@ const styles = StyleSheet.create({
   socialButtons: {
     width: "100%",
     marginBottom: 32,
+    gap: 16,
+  },
+  socialButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#E8E8E8",
+    gap: 12,
   },
   socialIcon: {
     width: 24,
     height: 24,
-    
   },
   divider: {
     flexDirection: "row",
@@ -126,50 +135,41 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     width: "100%",
   },
-  dividerLine: {
+  line: {
     flex: 1,
     height: 1,
     backgroundColor: "#E8E8E8",
   },
-  dividerText: {
+  orText: {
     marginHorizontal: 16,
     color: "#666666",
     fontSize: 16,
   },
-  footer: {
+  signUpButton: {
+    width: "100%",
+    padding: 16,
+    backgroundColor: "#873BEA",
+    alignItems: "center",
+    borderRadius: 12,
+  },
+  signUpButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  loginPrompt: {
     flexDirection: "row",
     marginTop: 24,
   },
-  footerText: {
+  promptText: {
     color: "#666666",
     fontSize: 16,
   },
-  footerLink: {
+  loginLink: {
     color: "#873BEA",
     fontSize: 16,
     fontWeight: "600",
   },
-  socialButton: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "#E8E8E8",
-    padding: 12,
-    borderRadius: 8,
-  },
-  signUpButton: {
-    width: "100%",
-    color:"white",
-    padding: 12,
-    backgroundColor: "#873BEA",
-    alignItems: "center",
-    borderRadius: 8,
-  },
- 
 });
 
 export default SignUpOptionsScreen;

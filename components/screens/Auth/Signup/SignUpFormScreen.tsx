@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useNavigation } from "@react-navigation/native"
@@ -29,18 +30,12 @@ const SignUpFormScreen = () => {
   const [loading, setLoading] = useState(false)
 
   const handleSignUp = () => {
-    if (!email || !password) {
-      // Handle validation
-      return
+    if (email && password) {
+      // After successful signup, navigate to profile setup
+      navigation.navigate("ProfileSetup")
+    } else {
+      Alert.alert("Error", "Please fill in all fields")
     }
-
-    setLoading(true)
-    // Simulate a network request
-    setTimeout(() => {
-      setLoading(false)
-      // Navigate to the next screen or home screen
-      // navigation.navigate("Home");
-    }, 1000)
   }
 
   return (
@@ -92,7 +87,7 @@ const SignUpFormScreen = () => {
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp} disabled={loading}>
-                <Text style={styles.signUpButtonText}>{loading ? "Signing up..." : "Sign In"}</Text>
+                <Text style={styles.signUpButtonText}>{loading ? "Signing up..." : "Sign Up"}</Text>
               </TouchableOpacity>
 
               <View style={styles.divider}>
@@ -113,10 +108,10 @@ const SignUpFormScreen = () => {
                 </TouchableOpacity>
               </View>
 
-              <View style={styles.footer}>
-                <Text style={styles.footerText}>Already have an account? </Text>
+              <View style={styles.loginPrompt}>
+                <Text style={styles.promptText}>Already have an account? </Text>
                 <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
-                  <Text style={styles.footerLink}>Sign in</Text>
+                  <Text style={styles.loginLink}>Login</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -245,16 +240,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 10,
   },
-  footer: {
+  loginPrompt: {
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 8,
   },
-  footerText: {
+  promptText: {
     color: "#666666",
     fontSize: 16,
   },
-  footerLink: {
+  loginLink: {
     color: "#873BEA",
     fontSize: 16,
     fontWeight: "600",

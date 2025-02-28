@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useNavigation } from "@react-navigation/native"
@@ -29,8 +30,8 @@ const LoginScreen = () => {
   const [rememberMe, setRememberMe] = useState(false)
 
   const handleLogin = () => {
-    // Handle login logic here
-    console.log("Login pressed")
+    // Navigate to profile setup flow without validation
+    navigation.navigate("ProfileSetup")
   }
 
   return (
@@ -88,7 +89,7 @@ const LoginScreen = () => {
               </View>
 
               <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                <Text style={styles.loginButtonText}>Login</Text>
+                <Text style={styles.loginButtonText}>Sign In</Text>
               </TouchableOpacity>
 
               <View style={styles.divider}>

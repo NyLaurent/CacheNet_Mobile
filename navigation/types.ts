@@ -10,6 +10,11 @@ export type RootStackParamList = {
     HomeTab: undefined;
     Settings: undefined;
     ProfileTab: undefined;
-    SignUpOptions:undefined;
-    SignUpForm:undefined
+    SignUpOptions: undefined;
+    SignUpForm: undefined;
+    ProfileSetup: undefined;
+    ProfilePicture: undefined;
+    AppSelection: undefined;
+    CategorySelection: undefined;
+    SetupSuccess: undefined;
 }; 
