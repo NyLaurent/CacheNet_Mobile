@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     color: '#873BEA',
     marginBottom: 16,
   },
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     color: '#666',
+    fontFamily: 'Poppins-Regular',
   },
 });
 

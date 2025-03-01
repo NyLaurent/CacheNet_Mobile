@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: 40,
     marginBottom: 32,
+    fontFamily: 'Poppins-Regular',
   },
   scrollView: {
     flex: 1,
@@ -111,9 +112,11 @@ const styles = StyleSheet.create({
   },
   categoryButtonText: {
     color: '#873BEA',
+    fontFamily: 'Poppins-Regular',
   },
   categoryButtonTextSelected: {
     color: '#fff',
+    fontFamily: 'Poppins-Regular',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -139,9 +142,11 @@ const styles = StyleSheet.create({
   },
   skipButtonText: {
     color: '#666',
+    fontFamily: 'Poppins-Medium',
   },
   continueButtonText: {
     color: '#fff',
+    fontFamily: 'Poppins-Medium',
   },
 });
 

@@ -163,7 +163,7 @@ const FillProfileScreen = () => {
 
           <TouchableOpacity 
             style={styles.continueButton}
-            onPress={() => navigation.navigate('ProfilePicture')}
+            onPress={() => navigation.navigate('AppSelection')}
           >
             <Text style={styles.continueButtonText}>Continue</Text>
           </TouchableOpacity>
@@ -187,10 +187,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerTitle: {
-    fontSize: 16,
+    fontSize: 20,
     marginLeft: 12,
     color: '#000',
-    fontWeight: '500',
+    fontFamily: 'Poppins-Bold',
   },
   formContainer: {
     flex: 1,
@@ -243,9 +243,11 @@ const styles = StyleSheet.create({
   inputText: {
     flex: 1,
     color: '#000',
+    fontFamily: 'Poppins-Regular',
   },
   placeholderText: {
     color: '#999',
+    fontFamily: 'Poppins-Regular',
   },
   hiddenInput: {
     position: 'absolute',
@@ -268,10 +270,12 @@ const styles = StyleSheet.create({
     color: '#000',
     height: 50,
     fontSize: 14,
+    fontFamily: 'Poppins-Regular',
   },
   phoneCodeText: {
     color: '#000',
     fontSize: 14,
+    fontFamily: 'Poppins-Regular',
   },
   buttonContainer: {
     width: '100%',
@@ -299,11 +303,11 @@ const styles = StyleSheet.create({
   },
   skipButtonText: {
     color: '#873BEA',
-    fontWeight: '500',
+    fontFamily: 'Poppins-Medium',
   },
   continueButtonText: {
     color: '#fff',
-    fontWeight: '500',
+    fontFamily: 'Poppins-Medium',
   },
 });
 
