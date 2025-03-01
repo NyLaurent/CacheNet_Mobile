@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: "600",
+    fontFamily: "Poppins-SemiBold",
     marginBottom: 32,
     color: "#000000",
   },
@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     fontSize: 16,
+    fontFamily: "Poppins-Regular",
   },
   eyeIcon: {
     padding: 8,
@@ -202,10 +203,12 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     fontSize: 14,
     color: "#666666",
+    fontFamily: "Poppins-Regular",
   },
   forgotPassword: {
     color: "#873BEA",
     fontSize: 14,
+    fontFamily: "Poppins-Regular",
   },
   loginButton: {
     width: "100%",
@@ -218,7 +221,7 @@ const styles = StyleSheet.create({
   loginButtonText: {
     color: "white",
     fontSize: 16,
-    fontWeight: "600",
+    fontFamily: "Poppins-SemiBold",
   },
   divider: {
     flexDirection: "row",
@@ -235,6 +238,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     color: "#666666",
     fontSize: 14,
+    fontFamily: "Poppins-Regular",
   },
   socialIconsContainer: {
     flexDirection: "row",
@@ -259,11 +263,12 @@ const styles = StyleSheet.create({
   footerText: {
     color: "#666666",
     fontSize: 16,
+    fontFamily: "Poppins-Regular",
   },
   footerLink: {
     color: "#873BEA",
     fontSize: 16,
-    fontWeight: "600",
+    fontFamily: "Poppins-SemiBold",
   },
 })
 

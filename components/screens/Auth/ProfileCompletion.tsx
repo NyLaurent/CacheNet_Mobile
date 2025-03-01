@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontFamily: "Poppins-Bold",
     marginBottom: 30,
   },
   input: {
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 15,
+    fontFamily: "Poppins-Regular",
   },
   bioInput: {
     height: 100,
@@ -84,12 +85,13 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#FFFFFF",
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Poppins-SemiBold",
   },
   skipText: {
     marginTop: 20,
     color: "#007AFF",
     fontSize: 16,
+    fontFamily: "Poppins-Regular",
   },
 });
 

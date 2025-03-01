@@ -37,11 +37,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
+    fontFamily: "Poppins-Bold",
     marginBottom: 20,
   },
   message: {
     fontSize: 18,
+    fontFamily: "Poppins-Regular",
     textAlign: "center",
     marginBottom: 30,
   },

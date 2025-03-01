@@ -46,19 +46,19 @@ const SignUpOptionsScreen = () => {
             style={styles.socialButton}
             onPress={() => handleSocialSignUp('Google')}>
             <Image source={require("../../../../assets/images/google.png")} style={styles.socialIcon} />
-            <Text>Continue with Google</Text>
+            <Text style={styles.socialButtonText}>Continue with Google</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.socialButton}
             onPress={() => handleSocialSignUp('Slack')}>
             <Image source={require("../../../../assets/images/slack.png")} style={styles.socialIcon} />
-            <Text>Continue with Slack</Text>
+            <Text style={styles.socialButtonText}>Continue with Slack</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.socialButton}
             onPress={() => handleSocialSignUp('GitHub')}>
             <Image source={require("../../../../assets/images/github.png")} style={styles.socialIcon} />
-            <Text>Continue with GitHub</Text>
+            <Text style={styles.socialButtonText}>Continue with GitHub</Text>
           </TouchableOpacity>
         </View>
 
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 36,
-    fontWeight: "600",
+    fontFamily: "Poppins-SemiBold",
     marginBottom: 32,
     color: "#000000",
   },
@@ -129,6 +129,9 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
+  socialButtonText: {
+    fontFamily: "Poppins-Regular",
+  },
   divider: {
     flexDirection: "row",
     alignItems: "center",
@@ -144,6 +147,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     color: "#666666",
     fontSize: 16,
+    fontFamily: "Poppins-Regular",
   },
   signUpButton: {
     width: "100%",
@@ -155,7 +159,7 @@ const styles = StyleSheet.create({
   signUpButtonText: {
     color: "white",
     fontSize: 16,
-    fontWeight: "600",
+    fontFamily: "Poppins-SemiBold",
   },
   loginPrompt: {
     flexDirection: "row",
@@ -164,11 +168,12 @@ const styles = StyleSheet.create({
   promptText: {
     color: "#666666",
     fontSize: 16,
+    fontFamily: "Poppins-Regular",
   },
   loginLink: {
     color: "#873BEA",
     fontSize: 16,
-    fontWeight: "600",
+    fontFamily: "Poppins-SemiBold",
   },
 });
 
