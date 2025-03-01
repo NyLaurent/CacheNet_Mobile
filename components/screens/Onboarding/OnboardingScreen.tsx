@@ -11,7 +11,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const onboardingData = [
   {
     title: "Caching content and enjoy",
-    description: "accessing different things with CacheNet as if you are online while you are offline",
+    description: "Accessing different things with CacheNet as if you are online while you are offline",
     image: require("../../../assets/images/logo.png"),
   },
   {
@@ -61,8 +61,8 @@ const OnboardingScreen = () => {
         style={[styles.image, { width: dimensions.width * 0.4, height: dimensions.width * 0.4 }]}
         resizeMode="contain"
       />
-      <Text style={[styles.title, { maxWidth: dimensions.width * 0.8 }]}>{item.title}</Text>
-      <Text style={[styles.description, { maxWidth: dimensions.width * 0.8 }]}>{item.description}</Text>
+      <Text className="font-regular" style={[styles.title, { maxWidth: dimensions.width * 0.8 }]}>{item.title}</Text>
+      <Text className="font-regular" style={[styles.description, { maxWidth: dimensions.width * 0.8 }]}>{item.description}</Text>
     </View>
   );
 
@@ -91,7 +91,7 @@ const OnboardingScreen = () => {
         </View>
 
         <TouchableOpacity style={styles.button} onPress={handleNext}>
-          <Text style={styles.buttonText}>
+          <Text className="font-regular" style={styles.buttonText}>
             {currentPage === onboardingData.length - 1 ? "Get Started" : "Next"}
           </Text>
         </TouchableOpacity>
@@ -113,14 +113,13 @@ const styles = StyleSheet.create({
   },
   image: {
     marginBottom: 40,
-    
   },
   title: {
-    fontSize: 24,
-    fontWeight: "700",
+    fontSize: 20,
     marginBottom: 16,
     textAlign: "center",
     color: "#000000",
+    fontFamily: "Poppins-Bold"
   },
   description: {
     fontSize: 16,
@@ -128,6 +127,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     color: "#666666",
     lineHeight: 24,
+    fontFamily: "Poppins-Regular"
   },
   footer: {
     paddingHorizontal: 20,
@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 18,
     fontWeight: "600",
+    fontFamily: "Poppins-SemiBold"
   },
 });
 

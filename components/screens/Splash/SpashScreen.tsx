@@ -115,7 +115,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#000000",
+    fontFamily: "Poppins-Bold"
   },
+
   loaderContainer: {
     position: "absolute",
     bottom: 150,
