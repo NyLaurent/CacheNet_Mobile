@@ -112,7 +112,7 @@ const LoginScreen = () => {
 
               <View style={styles.footer}>
                 <Text style={styles.footerText}>Don't have an account? </Text>
-                <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+                <TouchableOpacity onPress={() => navigation.navigate("SignUpForm")}>
                   <Text style={styles.footerLink}>Sign up</Text>
                 </TouchableOpacity>
               </View>

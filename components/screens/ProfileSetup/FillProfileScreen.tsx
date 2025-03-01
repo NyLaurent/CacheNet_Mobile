@@ -1,8 +1,23 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  StyleSheet, 
+  Image, 
+  Platform, 
+  Pressable 
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';    
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../navigation/types';
+import Icon from 'react-native-vector-icons/Ionicons';
+import * as ImagePicker from 'expo-image-picker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { format } from 'date-fns';
+import PhoneInput from 'react-native-phone-number-input';
 
 type ProfileSetupNavigationProp = StackNavigationProp<RootStackParamList, 'ProfileSetup'>;
 
@@ -12,60 +27,144 @@ const FillProfileScreen = () => {
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const requestPermission = async () => {
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
+        return false;
+      }
+      return true;
+    }
+    return true;
+  };
+
+  const handleImagePicker = async () => {
+    const hasPermission = await requestPermission();
+    
+    if (!hasPermission) return;
+    
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+      
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        setProfileImage(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.log('Error picking image:', error);
+    }
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date: Date) => {
+    setDateOfBirth(format(date, 'dd/MM/yyyy'));
+    hideDatePicker();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Text>← Fill Your Profile</Text>
-      </TouchableOpacity>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Icon name="arrow-back" size={24} color="#873BEA" />
+          <Text style={styles.headerTitle}>Fill Your Profile</Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.formContainer}>
-        <View style={styles.avatarPlaceholder}>
-          <Text style={styles.avatarText}>+</Text>
-        </View>
+        <TouchableOpacity style={styles.avatarContainer} onPress={handleImagePicker}>
+          {profileImage ? (
+            <Image source={{ uri: profileImage }} style={styles.avatar} />
+          ) : (
+            <View style={styles.avatarPlaceholder}>
+              <Icon name="person-outline" size={40} color="#999" />
+            </View>
+          )}
+          <View style={styles.cameraButton}>
+            <Icon name="camera" size={16} color="#fff" />
+          </View>
+        </TouchableOpacity>
 
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Full Name"
+            placeholder="Full Names"
             value={fullName}
             onChangeText={setFullName}
+            placeholderTextColor="#999"
           />
           
-          <TextInput
+          <TouchableOpacity 
             style={styles.input}
-            placeholder="Date of Birth"
-            value={dateOfBirth}
-            onChangeText={setDateOfBirth}
+            onPress={showDatePicker}
+          >
+            <Text style={[styles.inputText, dateOfBirth ? {} : styles.placeholderText]}>
+              {dateOfBirth || "Date of Birth"}
+            </Text>
+            <Icon name="calendar-outline" size={20} color="#999" />
+          </TouchableOpacity>
+
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+            maximumDate={new Date()}
           />
 
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-          />
+          <View style={styles.input}>
+            <Text style={[styles.inputText, email ? {} : styles.placeholderText]}>
+              {email || "Email"}
+            </Text>
+            <TextInput
+              style={styles.hiddenInput}
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              placeholder=""
+            />
+            <Icon name="mail-outline" size={20} color="#999" />
+          </View>
 
-          <TextInput
-            style={styles.input}
+          <PhoneInput
+            defaultValue={phoneNumber}
+            defaultCode="US"
+            layout="first"
+            onChangeFormattedText={(text) => setPhoneNumber(text)}
+            containerStyle={styles.phoneInputContainer}
+            textContainerStyle={styles.phoneTextContainer}
+            textInputStyle={styles.phoneTextInput}
+            codeTextStyle={styles.phoneCodeText}
             placeholder="Phone Number"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-            keyboardType="phone-pad"
           />
         </View>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity 
             style={styles.skipButton}
-            onPress={() => navigation.navigate('AppSelection')}>
+            onPress={() => navigation.navigate('AppSelection')}
+          >
             <Text style={styles.skipButtonText}>Skip</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
             style={styles.continueButton}
-            onPress={() => navigation.navigate('ProfilePicture')}>
+            onPress={() => navigation.navigate('ProfilePicture')}
+          >
             <Text style={styles.continueButtonText}>Continue</Text>
           </TouchableOpacity>
         </View>
@@ -79,13 +178,33 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  header: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
   backButton: {
-    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 16,
+    marginLeft: 12,
+    color: '#000',
+    fontWeight: '500',
   },
   formContainer: {
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 24,
+  },
+  avatarContainer: {
+    position: 'relative',
+    marginBottom: 40,
+  },
+  avatar: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
   },
   avatarPlaceholder: {
     width: 120,
@@ -94,23 +213,65 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 32,
   },
-  avatarText: {
-    fontSize: 40,
-    color: '#666',
+  cameraButton: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: '#873BEA',
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#fff',
   },
   inputContainer: {
     width: '100%',
-    gap: 16,
+    gap: 20,
   },
   input: {
     width: '100%',
-    height: 48,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
-    paddingHorizontal: 16,
+    height: 50,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+    paddingHorizontal: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  inputText: {
+    flex: 1,
+    color: '#000',
+  },
+  placeholderText: {
+    color: '#999',
+  },
+  hiddenInput: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    opacity: 0,
+  },
+  phoneInputContainer: {
+    width: '100%',
+    height: 50,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+    backgroundColor: 'transparent',
+  },
+  phoneTextContainer: {
+    backgroundColor: 'transparent',
+    paddingHorizontal: 0,
+  },
+  phoneTextInput: {
+    color: '#000',
+    height: 50,
+    fontSize: 14,
+  },
+  phoneCodeText: {
+    color: '#000',
+    fontSize: 14,
   },
   buttonContainer: {
     width: '100%',
@@ -118,30 +279,32 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 16,
     marginTop: 'auto',
-    paddingBottom: 24,
+    paddingBottom: 24
   },
   skipButton: {
     flex: 1,
-    height: 48,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 24,
+    height: 50,
+    backgroundColor: '#F3E8FF',
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
   continueButton: {
     flex: 1,
-    height: 48,
+    height: 50,
     backgroundColor: '#873BEA',
-    borderRadius: 24,
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
   skipButtonText: {
-    color: '#666',
+    color: '#873BEA',
+    fontWeight: '500',
   },
   continueButtonText: {
     color: '#fff',
+    fontWeight: '500',
   },
 });
 
-export default FillProfileScreen; 
+export default FillProfileScreen;
