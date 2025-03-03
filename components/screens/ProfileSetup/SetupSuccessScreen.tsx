@@ -27,6 +27,15 @@ const SetupSuccessScreen = () => {
     ]).start();
   }, []);
 
+  // Auto-navigate to Home after success screen
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.navigate('Home');
+    }, 2000); // 2 seconds delay
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Animated.View 

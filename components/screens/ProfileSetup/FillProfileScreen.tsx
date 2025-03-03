@@ -77,7 +77,7 @@ const FillProfileScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Icon name="arrow-back" size={24} color="#873BEA" />
@@ -156,7 +156,7 @@ const FillProfileScreen = () => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity 
             style={styles.skipButton}
-            onPress={() => navigation.navigate('AppSelection')}
+            onPress={() => navigation.navigate('SetupSuccess')}
           >
             <Text style={styles.skipButtonText}>Skip</Text>
           </TouchableOpacity>

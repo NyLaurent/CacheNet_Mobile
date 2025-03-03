@@ -110,13 +110,15 @@ const AppSelectionScreen = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity 
           style={styles.skipButton}
-          onPress={() => navigation.navigate('CategorySelection')}>
+          onPress={() => navigation.navigate('SetupSuccess')}
+        >
           <Text style={styles.skipButtonText}>Skip</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.continueButton}
-          onPress={() => navigation.navigate('CategorySelection')}>
+          onPress={() => navigation.navigate('CategorySelection')}
+        >
           <Text style={styles.continueButtonText}>Continue</Text>
         </TouchableOpacity>
       </View>
