@@ -15,6 +15,9 @@ import AppSelectionScreen from '../components/screens/ProfileSetup/AppSelectionS
 import CategorySelectionScreen from '../components/screens/ProfileSetup/CategorySelectionScreen';
 import SetupSuccessScreen from '../components/screens/ProfileSetup/SetupSuccessScreen';
 import NotificationsScreen from "../components/common/Notifications";
+import EditProfileScreen from '../components/screens/Profile/EditProfileScreen';
+import SecurityScreen from '../components/screens/Profile/SecurityScreen';
+import SettingsScreen from '../components/screens/Profile/SettingsScreen';
 
 const Stack = createStackNavigator<RootStackParamList>()
 
@@ -38,6 +41,9 @@ const AppNavigator = () => {
         <Stack.Screen name="ProfileCompletion" component={ProfileCompletionScreen} />
         <Stack.Screen name="AuthSuccess" component={AuthSuccessScreen} />
         <Stack.Screen name="Notifications" component={NotificationsScreen} />
+        <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+        <Stack.Screen name="Security" component={SecurityScreen} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

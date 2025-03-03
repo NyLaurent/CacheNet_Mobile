@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   View, 
   Text, 
@@ -10,19 +10,22 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../navigation/types';
+import { useState } from 'react';
 
-type SettingsTabNavigationProp = StackNavigationProp<RootStackParamList>;
-
-const SettingsTab = () => {
-  const navigation = useNavigation<SettingsTabNavigationProp>();
+const SettingsScreen = () => {
+  const navigation = useNavigation();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
+        <TouchableOpacity 
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <Icon name="arrow-back" size={24} color="#873BEA" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Settings</Text>
       </View>
 
@@ -55,40 +58,8 @@ const SettingsTab = () => {
 
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingLeft}>
-              <Icon name="notifications-outline" size={24} color="#333" />
-              <Text style={styles.settingText}>Notification</Text>
-            </View>
-            <Icon name="chevron-forward" size={24} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.settingItem}>
-            <View style={styles.settingLeft}>
-              <Icon name="person-outline" size={24} color="#333" />
-              <Text style={styles.settingText}>Edit Profile</Text>
-            </View>
-            <Icon name="chevron-forward" size={24} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.settingItem}>
-            <View style={styles.settingLeft}>
-              <Icon name="shield-outline" size={24} color="#333" />
-              <Text style={styles.settingText}>Security</Text>
-            </View>
-            <Icon name="chevron-forward" size={24} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.settingItem}>
-            <View style={styles.settingLeft}>
               <Icon name="key-outline" size={24} color="#333" />
               <Text style={styles.settingText}>Permission Granting</Text>
-            </View>
-            <Icon name="chevron-forward" size={24} color="#666" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.settingItem}>
-            <View style={styles.settingLeft}>
-              <Icon name="document-text-outline" size={24} color="#333" />
-              <Text style={styles.settingText}>Terms & Services</Text>
             </View>
             <Icon name="chevron-forward" size={24} color="#666" />
           </TouchableOpacity>
@@ -128,7 +99,7 @@ const SettingsTab = () => {
                 style={[styles.modalButton, styles.confirmButton]}
                 onPress={() => {
                   setShowLogoutModal(false);
-                  navigation.navigate('SignIn');
+                  // Handle logout logic here
                 }}
               >
                 <Text style={styles.confirmButtonText}>Yes, Logout</Text>
@@ -147,13 +118,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#f0f0f0',
   },
+  backButton: {
+    marginRight: 16,
+  },
   headerTitle: {
-    fontSize: 24,
-    fontFamily: 'Poppins-Bold',
+    fontSize: 18,
+    fontFamily: 'Poppins-SemiBold',
     color: '#333',
   },
   content: {
@@ -216,7 +192,6 @@ const styles = StyleSheet.create({
   modalButtons: {
     flexDirection: 'row',
     gap: 12,
-    width: '100%',
   },
   modalButton: {
     flex: 1,
@@ -243,5 +218,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingsTab;
-
+export default SettingsScreen; 

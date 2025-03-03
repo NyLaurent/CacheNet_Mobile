@@ -18,4 +18,6 @@ export type RootStackParamList = {
     CategorySelection: undefined;
     SetupSuccess: undefined;
     Notifications: undefined;
+    EditProfile: undefined;
+    Security: undefined;
 }; 
