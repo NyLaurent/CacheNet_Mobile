@@ -135,83 +135,7 @@ const App = () => {
       </ScrollView>
 
       {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity 
-          style={styles.navItem} 
-          onPress={() => setActiveTab('Home')}
-        >
-          <Home 
-            stroke={activeTab === 'Home' ? '#804ee7' : '#888'} 
-            width={24} 
-            height={24} 
-          />
-          <Text 
-            style={[
-              styles.navText, 
-              activeTab === 'Home' ? styles.activeNavText : {}
-            ]}
-          >
-            Home
-          </Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={styles.navItem} 
-          onPress={() => setActiveTab('Cache')}
-        >
-          <Database 
-            stroke={activeTab === 'Cache' ? '#804ee7' : '#888'} 
-            width={24} 
-            height={24} 
-          />
-          <Text 
-            style={[
-              styles.navText, 
-              activeTab === 'Cache' ? styles.activeNavText : {}
-            ]}
-          >
-            Cache
-          </Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={styles.navItem} 
-          onPress={() => setActiveTab('Profile')}
-        >
-          <User 
-            stroke={activeTab === 'Profile' ? '#804ee7' : '#888'} 
-            width={24} 
-            height={24} 
-          />
-          <Text 
-            style={[
-              styles.navText, 
-              activeTab === 'Profile' ? styles.activeNavText : {}
-            ]}
-          >
-            Profile
-          </Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={styles.navItem} 
-          onPress={() => setActiveTab('Setting')}
-        >
-          <Settings 
-            stroke={activeTab === 'Setting' ? '#804ee7' : '#888'} 
-            width={24} 
-            height={24} 
-          />
-          <Text 
-            style={[
-              styles.navText, 
-              activeTab === 'Setting' ? styles.activeNavText : {}
-            ]}
-          >
-            Setting
-          </Text>
-        </TouchableOpacity>
-      </View>
+      
     </SafeAreaView>
   );
 };
@@ -220,6 +144,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
+    paddingTop:10
   },
   header: {
     flexDirection: 'row',
@@ -241,11 +166,12 @@ const styles = StyleSheet.create({
   greetingText: {
     fontSize: 14,
     color: '#666',
+    fontFamily: 'Poppins-Regular'
   },
   nameText: {
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#333',
+    fontFamily: 'Poppins-Bold'
   },
   benefitsCard: {
     backgroundColor: '#804ee7',
@@ -255,14 +181,15 @@ const styles = StyleSheet.create({
   },
   benefitsTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: 'white',
     marginBottom: 5,
+    fontFamily: 'Poppins-Bold'
   },
   benefitsSubtitle: {
     fontSize: 14,
     color: 'rgba(255, 255, 255, 0.8)',
     marginBottom: 15,
+    fontFamily: 'Poppins-Regular'
   },
   premiumButton: {
     backgroundColor: 'white',
@@ -273,7 +200,7 @@ const styles = StyleSheet.create({
   },
   premiumButtonText: {
     color: '#804ee7',
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold'
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -284,12 +211,13 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#333',
+    fontFamily: 'Poppins-Bold'
   },
   seeAllText: {
     fontSize: 14,
     color: '#804ee7',
+    fontFamily: 'Poppins-Medium'
   },
   chartContainer: {
     alignItems: 'center',
@@ -337,7 +265,7 @@ const styles = StyleSheet.create({
   },
   appIcon: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold'
   },
   instagramIcon: {
     width: 30,
@@ -362,9 +290,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 3,
     color: '#888',
+    fontFamily: 'Poppins-Regular'
   },
   activeNavText: {
     color: '#804ee7',
+    fontFamily: 'Poppins-Medium'
   },
 });
 
