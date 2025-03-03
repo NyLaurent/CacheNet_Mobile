@@ -1,4 +1,5 @@
 import { SafeAreaProvider } from "react-native-safe-area-context"
+import { MenuProvider } from 'react-native-popup-menu'
 import AppNavigator from "./navigation/AppNavigator"
 import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins'
 import * as SplashScreen from 'expo-splash-screen'
@@ -39,9 +40,11 @@ const App = () => {
   }
 
   return (
-    <SafeAreaProvider onLayout={onLayoutRootView}>
-      <AppNavigator />
-    </SafeAreaProvider>
+    <MenuProvider>
+      <SafeAreaProvider onLayout={onLayoutRootView}>
+        <AppNavigator />
+      </SafeAreaProvider>
+    </MenuProvider>
   )
 }
 

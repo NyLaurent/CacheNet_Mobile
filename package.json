@@ -39,6 +39,7 @@
     "react-native-modal-datetime-picker": "^18.0.0",
     "react-native-paper": "^5.13.1",
     "react-native-phone-number-input": "^2.1.0",
+    "react-native-popup-menu": "^0.16.1",
     "react-native-reanimated": "^3.16.2",
     "react-native-safe-area-context": "^4.14.1",
     "react-native-screens": "^4.7.0",
