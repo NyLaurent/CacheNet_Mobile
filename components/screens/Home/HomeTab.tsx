@@ -13,9 +13,15 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BarChart } from 'react-native-chart-kit';
 import { Bell, Home, Database, User, Settings } from 'react-native-feather';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../navigation/types';
+
+type HomeTabNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('Home');
+  const navigation = useNavigation<HomeTabNavigationProp>();
   
   // Chart data
   const data = {
@@ -42,7 +48,7 @@ const App = () => {
               <Text style={styles.nameText}>Beni Samuel</Text>
             </View>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
             <Bell stroke="#333" width={24} height={24} />
           </TouchableOpacity>
         </View>

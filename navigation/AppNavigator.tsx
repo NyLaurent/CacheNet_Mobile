@@ -14,6 +14,7 @@ import FillProfileScreen from '../components/screens/ProfileSetup/FillProfileScr
 import AppSelectionScreen from '../components/screens/ProfileSetup/AppSelectionScreen';
 import CategorySelectionScreen from '../components/screens/ProfileSetup/CategorySelectionScreen';
 import SetupSuccessScreen from '../components/screens/ProfileSetup/SetupSuccessScreen';
+import NotificationsScreen from "../components/common/Notifications";
 
 const Stack = createStackNavigator<RootStackParamList>()
 
@@ -36,6 +37,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="ProfileCompletion" component={ProfileCompletionScreen} />
         <Stack.Screen name="AuthSuccess" component={AuthSuccessScreen} />
+        <Stack.Screen name="Notifications" component={NotificationsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

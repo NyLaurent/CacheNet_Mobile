@@ -17,4 +17,5 @@ export type RootStackParamList = {
     AppSelection: undefined;
     CategorySelection: undefined;
     SetupSuccess: undefined;
+    Notifications: undefined;
 }; 
