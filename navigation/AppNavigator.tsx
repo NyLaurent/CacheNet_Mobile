@@ -18,6 +18,11 @@ import NotificationsScreen from "../components/common/Notifications";
 import EditProfileScreen from '../components/screens/Profile/EditProfileScreen';
 import SecurityScreen from '../components/screens/Profile/SecurityScreen';
 import SettingsScreen from '../components/screens/Profile/SettingsScreen';
+import SubscriptionScreen from '../components/screens/Premium/SubscriptionScreen';
+import PaymentMethodScreen from '../components/screens/Premium/PaymentMethodScreen';
+import AddCardScreen from '../components/screens/Premium/AddCardScreen';
+import ReviewSummaryScreen from '../components/screens/Premium/ReviewSummaryScreen';
+import SuccessScreen from '../components/screens/Premium/SuccessScreen';
 
 const Stack = createStackNavigator<RootStackParamList>()
 
@@ -44,6 +49,11 @@ const AppNavigator = () => {
         <Stack.Screen name="EditProfile" component={EditProfileScreen} />
         <Stack.Screen name="Security" component={SecurityScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="Subscription" component={SubscriptionScreen} />
+        <Stack.Screen name="PaymentMethod" component={PaymentMethodScreen} />
+        <Stack.Screen name="AddCard" component={AddCardScreen} />
+        <Stack.Screen name="ReviewSummary" component={ReviewSummaryScreen} />
+        <Stack.Screen name="SubscriptionSuccess" component={SuccessScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

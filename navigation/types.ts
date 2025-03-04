@@ -1,3 +1,6 @@
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+
 export type RootStackParamList = {
     Splash: undefined;
     Onboarding: undefined;
@@ -20,4 +23,19 @@ export type RootStackParamList = {
     Notifications: undefined;
     EditProfile: undefined;
     Security: undefined;
-}; 
+    Subscription: undefined;
+    PaymentMethod: undefined;
+    AddCard: undefined;
+    ReviewSummary: undefined;
+    SubscriptionSuccess: {
+        planType: 'monthly' | 'yearly';
+        amount: number;
+    };
+};
+
+export type PremiumStackNavigationProp = StackNavigationProp<
+    RootStackParamList,
+    'Subscription' | 'PaymentMethod' | 'AddCard' | 'ReviewSummary' | 'SubscriptionSuccess'
+>;
+
+const navigation = useNavigation<PremiumStackNavigationProp>(); 

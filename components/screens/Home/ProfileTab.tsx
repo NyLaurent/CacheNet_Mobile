@@ -33,7 +33,10 @@ const ProfileTab = () => {
   <Text style={styles.benefitsDescription}>
     enjoy caching all your content with unlimited storage
   </Text>
-  <TouchableOpacity style={styles.premiumButton}>
+  <TouchableOpacity 
+    style={styles.premiumButton}
+    onPress={() => navigation.navigate('Subscription')}
+  >
     <Text style={styles.premiumButtonText}>Get Premium</Text>
   </TouchableOpacity>
 </View>
