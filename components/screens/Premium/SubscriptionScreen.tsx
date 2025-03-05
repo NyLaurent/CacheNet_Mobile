@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ArrowLeft, Check } from 'react-native-feather'; // Using Feather icons for consistency
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type RootStackParamList = {
   PaymentMethod: undefined;
@@ -48,7 +49,8 @@ const PaymentMethodScreen = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <ScrollView>
+      <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <TouchableOpacity 
           onPress={() => navigation.goBack()} 
@@ -71,6 +73,7 @@ const PaymentMethodScreen = () => {
         <SubscriptionCard />
       </View>
     </SafeAreaView>
+    </ScrollView>
   );
 };
 
