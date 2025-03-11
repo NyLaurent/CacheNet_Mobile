@@ -19,6 +19,8 @@ import { useNavigation } from "@react-navigation/native"
 import type { StackNavigationProp } from "@react-navigation/stack"
 import type { RootStackParamList } from "../../../../navigation/types"
 import Icon from "react-native-vector-icons/FontAwesome"
+import axios from "axios"
+import * as SecureStore from "expo-secure-store"
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, "SignIn">
 
@@ -29,11 +31,27 @@ const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Navigate to profile setup flow without validation
+    try {
+      const response = await axios.post("http://10.0.2.2:3000/auth/login", {
+        email: email,
+        password: password
+      });
+      if (response.data.success) {
+        handleStoreToken(response.data.accessToken);
+      }
+      Alert.alert("Error", response.data.message || "Login Error" );
+    }
+    catch (error) {
+      console.log("Login Error",error);
+    }
     navigation.navigate("ProfileSetup")
   }
 
+  const handleStoreToken = async (token: string) => {
+    await SecureStore.setItemAsync("AuthToken", token);
+  }
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>

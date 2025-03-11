@@ -1,15 +1,17 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  TouchableOpacity, 
-  StyleSheet, 
-  Image, 
-  Platform, 
-  Pressable 
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Platform,
+  Pressable,
+  Alert,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';    
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../navigation/types';
@@ -18,6 +20,8 @@ import * as ImagePicker from 'expo-image-picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { format } from 'date-fns';
 import PhoneInput from 'react-native-phone-number-input';
+import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 
 type ProfileSetupNavigationProp = StackNavigationProp<RootStackParamList, 'ProfileSetup'>;
 
@@ -44,9 +48,9 @@ const FillProfileScreen = () => {
 
   const handleImagePicker = async () => {
     const hasPermission = await requestPermission();
-    
+
     if (!hasPermission) return;
-    
+
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -54,7 +58,7 @@ const FillProfileScreen = () => {
         aspect: [1, 1],
         quality: 1,
       });
-      
+
       if (!result.canceled && result.assets && result.assets.length > 0) {
         setProfileImage(result.assets[0].uri);
       }
@@ -75,6 +79,45 @@ const FillProfileScreen = () => {
     setDateOfBirth(format(date, 'dd/MM/yyyy'));
     hideDatePicker();
   };
+
+  /**
+   *  Author: Beni samuel
+   *  Description: Handling Fill Profile Intergration
+   */
+
+  const handleFillProfileChanges = async () => {
+    const token = await SecureStore.getItemAsync('AuthToken');
+    if (!token) {
+      console.log('Token Not Found!!!');
+      return;
+    }
+  
+    try {
+      const response = await axios.put(
+        'http://10.0.2.2:3000/user',
+        {
+          name: fullName,
+          dob: Date.parse(dateOfBirth),
+          email,
+          phone: phoneNumber,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
+      );
+  
+      if (response.data.success) {
+        navigation.navigate('AppSelection');
+      } else {
+        Alert.alert('Error', response.data.message || 'Updating Failed');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -107,13 +150,10 @@ const FillProfileScreen = () => {
             onChangeText={setFullName}
             placeholderTextColor="#999"
           />
-          
-          <TouchableOpacity 
-            style={styles.input}
-            onPress={showDatePicker}
-          >
+
+          <TouchableOpacity style={styles.input} onPress={showDatePicker}>
             <Text style={[styles.inputText, dateOfBirth ? {} : styles.placeholderText]}>
-              {dateOfBirth || "Date of Birth"}
+              {dateOfBirth || 'Date of Birth'}
             </Text>
             <Icon name="calendar-outline" size={20} color="#999" />
           </TouchableOpacity>
@@ -128,7 +168,7 @@ const FillProfileScreen = () => {
 
           <View style={styles.input}>
             <Text style={[styles.inputText, email ? {} : styles.placeholderText]}>
-              {email || "Email"}
+              {email || 'Email'}
             </Text>
             <TextInput
               style={styles.hiddenInput}
@@ -154,17 +194,13 @@ const FillProfileScreen = () => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.skipButton}
-            onPress={() => navigation.navigate('SetupSuccess')}
-          >
+            onPress={() => navigation.navigate('SetupSuccess')}>
             <Text style={styles.skipButtonText}>Skip</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={styles.continueButton}
-            onPress={() => navigation.navigate('AppSelection')}
-          >
+          <TouchableOpacity style={styles.continueButton} onPress={handleFillProfileChanges}>
             <Text style={styles.continueButtonText}>Continue</Text>
           </TouchableOpacity>
         </View>
@@ -283,7 +319,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 16,
     marginTop: 'auto',
-    paddingBottom: 24
+    paddingBottom: 24,
   },
   skipButton: {
     flex: 1,

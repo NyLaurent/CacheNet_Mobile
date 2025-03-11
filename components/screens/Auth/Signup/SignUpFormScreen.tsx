@@ -1,6 +1,6 @@
-"use client"
+'use client';
 
-import { useState } from "react"
+import { useState } from 'react';
 import {
   View,
   Text,
@@ -12,31 +12,49 @@ import {
   Platform,
   ScrollView,
   Alert,
-} from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
-import { useNavigation } from "@react-navigation/native"
-import type { StackNavigationProp } from "@react-navigation/stack"
-import type { RootStackParamList } from "../../../../navigation/types"
-import Icon from "react-native-vector-icons/FontAwesome"
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '../../../../navigation/types';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios';
 
-type SignUpFormScreenNavigationProp = StackNavigationProp<RootStackParamList, "SignUpForm">
+type SignUpFormScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignUpForm'>;
 
 const SignUpFormScreen = () => {
-  const navigation = useNavigation<SignUpFormScreenNavigationProp>()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const navigation = useNavigation<SignUpFormScreenNavigationProp>();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSignUp = () => {
-    if (email && password) {
-      // After successful signup, navigate to profile setup
-      navigation.navigate("ProfileSetup")
-    } else {
-      Alert.alert("Error", "Please fill in all fields")
+  const handleSignUp = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
     }
-  }
+
+    setLoading(true);
+    try {
+      const response = await axios.post('http://10.0.2.2:3000/auth/signup', {
+        email,
+        password,
+      });
+
+      if (response.data.success) {
+        navigation.navigate('SignIn');
+      } else {
+        Alert.alert('Error', response.data.message || 'Signup failed');
+      }
+    } catch (error) {
+      console.error('Signup error:', error);
+      Alert.alert('Error', 'Something went wrong. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -44,10 +62,16 @@ const SignUpFormScreen = () => {
         <Icon name="arrow-left" size={24} color="#9B59B6" />
       </TouchableOpacity>
 
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.content}>
-            <Image source={require("../../../../assets/images/logo.png")} style={styles.logo} resizeMode="contain" />
+            <Image
+              source={require('../../../../assets/images/logo.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
 
             <Text style={styles.title}>Create Your Account</Text>
 
@@ -74,20 +98,27 @@ const SignUpFormScreen = () => {
                   secureTextEntry={!showPassword}
                   autoCapitalize="none"
                 />
-                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-                  <Icon name={showPassword ? "eye" : "eye-slash"} size={20} color="#666666" />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={styles.eyeIcon}>
+                  <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color="#666666" />
                 </TouchableOpacity>
               </View>
 
-              <TouchableOpacity style={styles.checkboxContainer} onPress={() => setRememberMe(!rememberMe)}>
+              <TouchableOpacity
+                style={styles.checkboxContainer}
+                onPress={() => setRememberMe(!rememberMe)}>
                 <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
                   {rememberMe && <Icon name="check" size={14} color="white" />}
                 </View>
                 <Text style={styles.checkboxLabel}>Remember me</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp} disabled={loading}>
-                <Text style={styles.signUpButtonText}>{loading ? "Signing up..." : "Sign Up"}</Text>
+              <TouchableOpacity
+                style={styles.signUpButton}
+                onPress={handleSignUp}
+                disabled={loading}>
+                <Text style={styles.signUpButtonText}>{loading ? 'Signing up...' : 'Sign Up'}</Text>
               </TouchableOpacity>
 
               <View style={styles.divider}>
@@ -110,7 +141,7 @@ const SignUpFormScreen = () => {
 
               <View style={styles.loginPrompt}>
                 <Text style={styles.promptText}>Already have an account? </Text>
-                <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
+                <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
                   <Text style={styles.loginLink}>Login</Text>
                 </TouchableOpacity>
               </View>
@@ -119,23 +150,23 @@ const SignUpFormScreen = () => {
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
   },
   scrollContent: {
     flexGrow: 1,
   },
   backButton: {
-    padding:26
+    padding: 26,
   },
   content: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     paddingHorizontal: 24,
     paddingTop: 30,
   },
@@ -146,18 +177,18 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontFamily: "Poppins-SemiBold",
+    fontFamily: 'Poppins-SemiBold',
     marginBottom: 32,
-    color: "#000000",
+    color: '#000000',
   },
   formContainer: {
-    width: "100%",
+    width: '100%',
   },
   inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: "#E8E8E8",
+    borderColor: '#E8E8E8',
     borderRadius: 8,
     marginBottom: 16,
     paddingHorizontal: 12,
@@ -170,14 +201,14 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     fontSize: 16,
-    fontFamily: "Poppins-Regular",
+    fontFamily: 'Poppins-Regular',
   },
   eyeIcon: {
     padding: 8,
   },
   checkboxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 24,
   },
   checkbox: {
@@ -185,52 +216,52 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: "#873BEA",
+    borderColor: '#873BEA',
     marginRight: 10,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   checkboxChecked: {
-    backgroundColor: "#873BEA",
+    backgroundColor: '#873BEA',
   },
   checkboxLabel: {
     fontSize: 14,
-    color: "#666666",
-    fontFamily: "Poppins-Regular",
+    color: '#666666',
+    fontFamily: 'Poppins-Regular',
   },
   signUpButton: {
-    width: "100%",
+    width: '100%',
     padding: 12,
-    backgroundColor: "#873BEA",
-    alignItems: "center",
+    backgroundColor: '#873BEA',
+    alignItems: 'center',
     borderRadius: 8,
     marginBottom: 24,
   },
   signUpButtonText: {
-    color: "white",
+    color: 'white',
     fontSize: 16,
-    fontFamily: "Poppins-SemiBold",
+    fontFamily: 'Poppins-SemiBold',
   },
   divider: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 24,
-    width: "100%",
+    width: '100%',
   },
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: "#E8E8E8",
+    backgroundColor: '#E8E8E8',
   },
   dividerText: {
     marginHorizontal: 16,
-    color: "#666666",
+    color: '#666666',
     fontSize: 14,
-    fontFamily: "Poppins-Regular",
+    fontFamily: 'Poppins-Regular',
   },
   socialIconsContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginBottom: 24,
   },
   socialIconButton: {
@@ -238,27 +269,26 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     borderWidth: 1,
-    borderColor: "#E8E8E8",
-    alignItems: "center",
-    justifyContent: "center",
+    borderColor: '#E8E8E8',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginHorizontal: 10,
   },
   loginPrompt: {
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginTop: 8,
   },
   promptText: {
-    color: "#666666",
+    color: '#666666',
     fontSize: 16,
-    fontFamily: "Poppins-Regular",
+    fontFamily: 'Poppins-Regular',
   },
   loginLink: {
-    color: "#873BEA",
+    color: '#873BEA',
     fontSize: 16,
-    fontFamily: "Poppins-SemiBold",
+    fontFamily: 'Poppins-SemiBold',
   },
-})
+});
 
-export default SignUpFormScreen
-
+export default SignUpFormScreen;
