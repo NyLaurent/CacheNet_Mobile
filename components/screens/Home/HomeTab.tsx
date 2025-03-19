@@ -1,14 +1,13 @@
 // App.js
-import React, { useState } from 'react';
-import { 
-  
-  StyleSheet, 
-  View, 
-  Text, 
-  Image, 
-  TouchableOpacity, 
+import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
   ScrollView,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BarChart } from 'react-native-chart-kit';
@@ -16,13 +15,29 @@ import { Bell, Home, Database, User, Settings } from 'react-native-feather';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../navigation/types';
+import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 
 type HomeTabNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('Home');
-  const navigation = useNavigation<HomeTabNavigationProp>();
+  const [currentUser, setCurrentUser] = useState<{
+    name: string;
+    email: string;
+    password: string;
+    dob: string;
+    phone: string;
+  }>({
+    name: '',
+    email: '',
+    password: '',
+    dob: '',
+    phone: '',
+  });
   
+  const navigation = useNavigation<HomeTabNavigationProp>();
+
   // Chart data
   const data = {
     labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
@@ -33,19 +48,63 @@ const App = () => {
     ],
   };
 
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
+  // Fetching the current User
+  const getCurrentUser = async () => {
+    try {
+      const token = await SecureStore.getItemAsync('AuthToken');
+      if (!token) {
+        console.log('No token found, redirecting to login');
+        navigation.navigate('SignIn');
+        return;
+      }
+      const response = await axios.get('http://192.168.43.122:3000/user/me', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setCurrentUser(response.data);
+      console.log(currentUser); // Assuming response contains `name`
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error message:", error.message);
+        console.error("Error code:", error.code);
+        console.error("Error config:", error.config);
+        
+        if (error.response) {
+          // Server responded with a status code outside the 2xx range
+          console.error("Response data:", error.response.data);
+          console.error("Response status:", error.response.status);
+          console.error("Response headers:", error.response.headers);
+        } else if (error.request) {
+          // Request was made but no response was received
+          console.error("No response received:", error.request);
+        } else {
+          // Other errors (e.g., setting up the request)
+          console.error("Error setting up request:", error.message);
+        }
+      } else {
+        console.error("Non-Axios error:", error);
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.profileSection}>
-            <Image 
-              source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }} 
-              style={styles.profileImage} 
+            <Image
+              source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
+              style={styles.profileImage}
             />
             <View>
               <Text style={styles.greetingText}>Good Morning 👋</Text>
-              <Text style={styles.nameText}>Beni Samuel</Text>
+              <Text style={styles.nameText}>{currentUser.name}</Text>
             </View>
           </View>
           <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
@@ -59,10 +118,9 @@ const App = () => {
           <Text style={styles.benefitsSubtitle}>
             enjoy caching all your content with unlimited storage
           </Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.premiumButton}
-            onPress={() => navigation.navigate('Subscription')}
-          >
+            onPress={() => navigation.navigate('Subscription')}>
             <Text style={styles.premiumButtonText}>Get Premium</Text>
           </TouchableOpacity>
         </View>
@@ -77,41 +135,35 @@ const App = () => {
 
         {/* Chart */}
         <View style={styles.chartContainer}>
-        <BarChart
-  data={data}
-  width={Dimensions.get('window').width - 40}
-  height={180}
-  yAxisLabel=""  // Add this line
-  yAxisSuffix=""
-  chartConfig={{
-    backgroundColor: '#ffffff',
-    backgroundGradientFrom: '#ffffff',
-    backgroundGradientTo: '#ffffff',
-    decimalPlaces: 0,
-    color: (opacity = 1) => `rgba(128, 78, 231, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    style: {
-      borderRadius: 16,
-    },
-    barPercentage: 0.5,
-  }}
-  style={styles.chart}
-  showValuesOnTopOfBars={false}
-  withInnerLines={false}
-  fromZero
-/>
+          <BarChart
+            data={data}
+            width={Dimensions.get('window').width - 40}
+            height={180}
+            yAxisLabel="" // Add this line
+            yAxisSuffix=""
+            chartConfig={{
+              backgroundColor: '#ffffff',
+              backgroundGradientFrom: '#ffffff',
+              backgroundGradientTo: '#ffffff',
+              decimalPlaces: 0,
+              color: (opacity = 1) => `rgba(128, 78, 231, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+              barPercentage: 0.5,
+            }}
+            style={styles.chart}
+            showValuesOnTopOfBars={false}
+            withInnerLines={false}
+            fromZero
+          />
         </View>
 
         {/* Pagination Dots */}
         <View style={styles.paginationDots}>
           {[0, 1, 2, 3, 4].map((dot, index) => (
-            <View 
-              key={index} 
-              style={[
-                styles.dot, 
-                index === 0 ? styles.activeDot : {}
-              ]} 
-            />
+            <View key={index} style={[styles.dot, index === 0 ? styles.activeDot : {}]} />
           ))}
         </View>
 
@@ -129,22 +181,25 @@ const App = () => {
             <Text style={styles.appIcon}>𝕏</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.appIconContainer}>
-            <Image 
-              source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png' }} 
-              style={styles.instagramIcon} 
+            <Image
+              source={{
+                uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png',
+              }}
+              style={styles.instagramIcon}
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.appIconContainer}>
-            <Image 
-              source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/2560px-YouTube_full-color_icon_%282017%29.svg.png' }} 
-              style={styles.youtubeIcon} 
+            <Image
+              source={{
+                uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/2560px-YouTube_full-color_icon_%282017%29.svg.png',
+              }}
+              style={styles.youtubeIcon}
             />
           </TouchableOpacity>
         </View>
       </ScrollView>
 
       {/* Bottom Navigation */}
-      
     </SafeAreaView>
   );
 };
@@ -153,7 +208,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
-    paddingTop:10
+    paddingTop: 10,
   },
   header: {
     flexDirection: 'row',
@@ -175,12 +230,12 @@ const styles = StyleSheet.create({
   greetingText: {
     fontSize: 14,
     color: '#666',
-    fontFamily: 'Poppins-Regular'
+    fontFamily: 'Poppins-Regular',
   },
   nameText: {
     fontSize: 16,
     color: '#333',
-    fontFamily: 'Poppins-Bold'
+    fontFamily: 'Poppins-Bold',
   },
   benefitsCard: {
     backgroundColor: '#804ee7',
@@ -192,13 +247,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'white',
     marginBottom: 5,
-    fontFamily: 'Poppins-Bold'
+    fontFamily: 'Poppins-Bold',
   },
   benefitsSubtitle: {
     fontSize: 14,
     color: 'rgba(255, 255, 255, 0.8)',
     marginBottom: 15,
-    fontFamily: 'Poppins-Regular'
+    fontFamily: 'Poppins-Regular',
   },
   premiumButton: {
     backgroundColor: 'white',
@@ -209,7 +264,7 @@ const styles = StyleSheet.create({
   },
   premiumButtonText: {
     color: '#804ee7',
-    fontFamily: 'Poppins-Bold'
+    fontFamily: 'Poppins-Bold',
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -221,12 +276,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     color: '#333',
-    fontFamily: 'Poppins-Bold'
+    fontFamily: 'Poppins-Bold',
   },
   seeAllText: {
     fontSize: 14,
     color: '#804ee7',
-    fontFamily: 'Poppins-Medium'
+    fontFamily: 'Poppins-Medium',
   },
   chartContainer: {
     alignItems: 'center',
@@ -274,7 +329,7 @@ const styles = StyleSheet.create({
   },
   appIcon: {
     fontSize: 24,
-    fontFamily: 'Poppins-Bold'
+    fontFamily: 'Poppins-Bold',
   },
   instagramIcon: {
     width: 30,
@@ -299,11 +354,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 3,
     color: '#888',
-    fontFamily: 'Poppins-Regular'
+    fontFamily: 'Poppins-Regular',
   },
   activeNavText: {
     color: '#804ee7',
-    fontFamily: 'Poppins-Medium'
+    fontFamily: 'Poppins-Medium',
   },
 });
 

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { 
   View, 
@@ -6,12 +7,15 @@ import {
   TouchableOpacity, 
   Image, 
   TextInput,
-  ScrollView 
+  ScrollView, 
+  Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { format } from 'date-fns';
+import * as SecureStore from "expo-secure-store";
+import axios from 'axios';
 
 const EditProfileScreen = () => {
   const navigation = useNavigation();
@@ -20,6 +24,39 @@ const EditProfileScreen = () => {
   const [email, setEmail] = useState('benisamuel565@gmail.com');
   const [date, setDate] = useState('2008/01/17');
   const [phone, setPhone] = useState('0798876169');
+
+  const handleProfileUpdate = async () => {
+    const token = await SecureStore.getItemAsync('AuthToken');
+        if (!token) {
+          console.log('Token Not Found!!!');
+          return;
+        }
+      
+        try {
+          const response = await axios.put(
+            'http://10.0.2.2:3000/user',
+            {
+              name: name,
+              dob: Date.parse(date),
+              email,
+              phone: phone,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              }
+            }
+          );
+      
+          if (response.data.success) {
+           Alert.alert('Success', "User Updated")
+          } else {
+            Alert.alert('Error', response.data.message || 'Updating Failed');
+          }
+        } catch (error) {
+          console.log(error);
+        }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -105,7 +142,7 @@ const EditProfileScreen = () => {
           style={styles.updateButton}
           onPress={() => {/* Handle update */}}
         >
-          <Text style={styles.updateButtonText}>Update</Text>
+          <Text style={styles.updateButtonText} onPress={handleProfileUpdate}>Update</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

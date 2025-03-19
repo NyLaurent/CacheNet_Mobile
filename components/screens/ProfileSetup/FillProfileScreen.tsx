@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import {
   View,
@@ -80,34 +79,41 @@ const FillProfileScreen = () => {
     hideDatePicker();
   };
 
-  /**
-   *  Author: Beni samuel
-   *  Description: Handling Fill Profile Intergration
-   */
-
   const handleFillProfileChanges = async () => {
     const token = await SecureStore.getItemAsync('AuthToken');
     if (!token) {
       console.log('Token Not Found!!!');
       return;
     }
-  
+
     try {
-      const response = await axios.put(
-        'http://10.0.2.2:3000/user',
-        {
-          name: fullName,
-          dob: Date.parse(dateOfBirth),
-          email,
-          phone: phoneNumber,
+      // Create FormData for multipart upload
+      const formData = new FormData();
+      formData.append('name', fullName);
+      formData.append('dob', Date.parse(dateOfBirth).toString());
+      formData.append('email', email);
+      formData.append('phone', phoneNumber);
+
+      // Append image if it exists
+      if (profileImage) {
+        const filename = profileImage.split('/').pop();
+        const match = /\.(\w+)$/.exec(filename || '');
+        const type = match ? `image/${match[1]}` : `image`;
+
+        formData.append('file', {
+          uri: profileImage,
+          name: filename || 'profile.jpg',
+          type,
+        } as any);
+      }
+
+      const response = await axios.put('http://192.168.43.122:3000/user', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
-        }
-      );
-  
+      });
+
       if (response.data.success) {
         navigation.navigate('AppSelection');
       } else {
@@ -115,9 +121,9 @@ const FillProfileScreen = () => {
       }
     } catch (error) {
       console.log(error);
+      Alert.alert('Error', 'Something went wrong while updating profile');
     }
   };
-  
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
