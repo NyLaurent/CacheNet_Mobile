@@ -34,7 +34,7 @@ const LoginScreen = () => {
   const handleLogin = async () => {
     // Navigate to profile setup flow without validation
     try {
-      const response = await axios.post("http://192.168.43.122:3000/auth/login", {
+      const response = await axios.post("http://10.0.2.2:3000/auth/login", {
         email: email,
         password: password
       });
