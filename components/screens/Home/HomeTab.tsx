@@ -61,7 +61,7 @@ const App = () => {
         navigation.navigate('SignIn');
         return;
       }
-      const response = await axios.get('http://192.168.43.122:3000/user/me', {
+      const response = await axios.get('http://10.0.2.2:3000/user/me', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
